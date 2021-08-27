@@ -14,25 +14,25 @@ import "pagarmecoreapi_lib/models_pkg"
  * Interface for the ORDERS_IMPL
  */
 type ORDERS interface {
-    GetOrder (string) (*models_pkg.GetOrderResponse, error)
-
-    CreateOrder (*models_pkg.CreateOrderRequest, *string) (*models_pkg.GetOrderResponse, error)
-
     GetOrders (*int64, *int64, *string, *string, *time.Time, *time.Time, *string) (*models_pkg.ListOrderResponse, error)
-
-    UpdateOrderMetadata (string, *models_pkg.UpdateMetadataRequest, *string) (*models_pkg.GetOrderResponse, error)
-
-    DeleteAllOrderItems (string, *string) (*models_pkg.GetOrderResponse, error)
 
     UpdateOrderItem (string, string, *models_pkg.UpdateOrderItemRequest, *string) (*models_pkg.GetOrderItemResponse, error)
 
+    DeleteAllOrderItems (string, *string) (*models_pkg.GetOrderResponse, error)
+
     DeleteOrderItem (string, string, *string) (*models_pkg.GetOrderItemResponse, error)
+
+    CloseOrder (string, *models_pkg.UpdateOrderStatusRequest, *string) (*models_pkg.GetOrderResponse, error)
+
+    CreateOrder (*models_pkg.CreateOrderRequest, *string) (*models_pkg.GetOrderResponse, error)
 
     CreateOrderItem (string, *models_pkg.CreateOrderItemRequest, *string) (*models_pkg.GetOrderItemResponse, error)
 
     GetOrderItem (string, string) (*models_pkg.GetOrderItemResponse, error)
 
-    UpdateOrderStatus (string, *models_pkg.UpdateOrderStatusRequest, *string) (*models_pkg.GetOrderResponse, error)
+    UpdateOrderMetadata (string, *models_pkg.UpdateMetadataRequest, *string) (*models_pkg.GetOrderResponse, error)
+
+    GetOrder (string) (*models_pkg.GetOrderResponse, error)
 }
 
 /*

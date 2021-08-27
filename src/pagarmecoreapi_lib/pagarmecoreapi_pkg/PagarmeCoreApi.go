@@ -8,17 +8,17 @@ package PagarmeCoreApiClient
 
 import(
 	"pagarmecoreapi_lib/configuration_pkg"
-	"pagarmecoreapi_lib/subscriptions_pkg"
-	"pagarmecoreapi_lib/orders_pkg"
 	"pagarmecoreapi_lib/plans_pkg"
+	"pagarmecoreapi_lib/subscriptions_pkg"
 	"pagarmecoreapi_lib/invoices_pkg"
+	"pagarmecoreapi_lib/orders_pkg"
 	"pagarmecoreapi_lib/customers_pkg"
-	"pagarmecoreapi_lib/charges_pkg"
 	"pagarmecoreapi_lib/recipients_pkg"
+	"pagarmecoreapi_lib/charges_pkg"
+	"pagarmecoreapi_lib/transfers_pkg"
 	"pagarmecoreapi_lib/tokens_pkg"
 	"pagarmecoreapi_lib/sellers_pkg"
 	"pagarmecoreapi_lib/transactions_pkg"
-	"pagarmecoreapi_lib/transfers_pkg"
 )
 
 
@@ -26,17 +26,17 @@ import(
  * Interface for the PAGARMECOREAPI_IMPL
  */
 type PAGARMECOREAPI interface {
-    Subscriptions()         subscriptions_pkg.SUBSCRIPTIONS
-    Orders()                orders_pkg.ORDERS
     Plans()                 plans_pkg.PLANS
+    Subscriptions()         subscriptions_pkg.SUBSCRIPTIONS
     Invoices()              invoices_pkg.INVOICES
+    Orders()                orders_pkg.ORDERS
     Customers()             customers_pkg.CUSTOMERS
-    Charges()               charges_pkg.CHARGES
     Recipients()            recipients_pkg.RECIPIENTS
+    Charges()               charges_pkg.CHARGES
+    Transfers()             transfers_pkg.TRANSFERS
     Tokens()                tokens_pkg.TOKENS
     Sellers()               sellers_pkg.SELLERS
     Transactions()          transactions_pkg.TRANSACTIONS
-    Transfers()             transfers_pkg.TRANSFERS
     Configuration()         configuration_pkg.CONFIGURATION
 }
 

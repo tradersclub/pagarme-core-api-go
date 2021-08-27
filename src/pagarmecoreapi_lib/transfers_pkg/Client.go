@@ -23,16 +23,25 @@ type TRANSFERS_IMPL struct {
 
 /**
  * TODO: type endpoint description here
- * @param    *models_pkg.CreateTransfer        request     parameter: Required
+ * @param    string        transferId      parameter: Required
  * @return	Returns the *models_pkg.GetTransfer response from the API call
  */
-func (me *TRANSFERS_IMPL) CreateTransfer (
-            request *models_pkg.CreateTransfer) (*models_pkg.GetTransfer, error) {
+func (me *TRANSFERS_IMPL) GetTransferById (
+            transferId string) (*models_pkg.GetTransfer, error) {
     //the endpoint path uri
-    _pathUrl := "/transfers/recipients"
+    _pathUrl := "/transfers/{transfer_id}"
 
     //variable to hold errors
     var err error = nil
+    //process optional template parameters
+    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
+        "transfer_id" : transferId,
+    })
+    if err != nil {
+        //error in template param handling
+        return nil, err
+    }
+
     //the base uri for api requests
     _queryBuilder := configuration_pkg.BASEURI;
 
@@ -47,13 +56,12 @@ func (me *TRANSFERS_IMPL) CreateTransfer (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 1.0.0-beta.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
         "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
     }
 
     //prepare API request
-    _request := unirest.PostWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+    _request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
     //and invoke the API call request to fetch the response
     _response, err := unirest.AsString(_request,false);
     if err != nil {
@@ -96,25 +104,16 @@ func (me *TRANSFERS_IMPL) CreateTransfer (
 
 /**
  * TODO: type endpoint description here
- * @param    string        transferId      parameter: Required
+ * @param    *models_pkg.CreateTransfer        request     parameter: Required
  * @return	Returns the *models_pkg.GetTransfer response from the API call
  */
-func (me *TRANSFERS_IMPL) GetTransferById (
-            transferId string) (*models_pkg.GetTransfer, error) {
+func (me *TRANSFERS_IMPL) CreateTransfer (
+            request *models_pkg.CreateTransfer) (*models_pkg.GetTransfer, error) {
     //the endpoint path uri
-    _pathUrl := "/transfers/{transfer_id}"
+    _pathUrl := "/transfers/recipients"
 
     //variable to hold errors
     var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "transfer_id" : transferId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
-
     //the base uri for api requests
     _queryBuilder := configuration_pkg.BASEURI;
 
@@ -129,12 +128,13 @@ func (me *TRANSFERS_IMPL) GetTransferById (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 1.0.0-beta.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
         "accept" : "application/json",
+        "content-type" : "application/json; charset=utf-8",
     }
 
     //prepare API request
-    _request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+    _request := unirest.PostWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
     //and invoke the API call request to fetch the response
     _response, err := unirest.AsString(_request,false);
     if err != nil {
@@ -199,7 +199,7 @@ func (me *TRANSFERS_IMPL) GetTransfers () (*models_pkg.ListTransfers, error) {
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 1.0.0-beta.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
         "accept" : "application/json",
     }
 

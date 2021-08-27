@@ -14,17 +14,17 @@ import "pagarmecoreapi_lib/models_pkg"
  * Interface for the SELLERS_IMPL
  */
 type SELLERS interface {
-    GetSellerById (string) (*models_pkg.GetSellerResponse, error)
-
-    DeleteSeller (string, *string) (*models_pkg.GetSellerResponse, error)
-
     CreateSeller (*models_pkg.CreateSellerRequest, *string) (*models_pkg.GetSellerResponse, error)
 
-    GetSellers (*int64, *int64, *string, *string, *string, *string, *string, *time.Time, *time.Time) (*models_pkg.ListSellerResponse, error)
+    UpdateSellerMetadata (string, *models_pkg.UpdateMetadataRequest, *string) (*models_pkg.GetSellerResponse, error)
 
     UpdateSeller (string, *models_pkg.UpdateSellerRequest, *string) (*models_pkg.GetSellerResponse, error)
 
-    UpdateSellerMetadata (string, *models_pkg.UpdateMetadataRequest, *string) (*models_pkg.GetSellerResponse, error)
+    DeleteSeller (string, *string) (*models_pkg.GetSellerResponse, error)
+
+    GetSellerById (string) (*models_pkg.GetSellerResponse, error)
+
+    GetSellers (*int64, *int64, *string, *string, *string, *string, *string, *time.Time, *time.Time) (*models_pkg.ListSellerResponse, error)
 }
 
 /*
