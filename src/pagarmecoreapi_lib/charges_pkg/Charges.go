@@ -16,6 +16,8 @@ import "pagarmecoreapi_lib/models_pkg"
 type CHARGES interface {
     UpdateChargeMetadata (string, *models_pkg.UpdateMetadataRequest, *string) (*models_pkg.GetChargeResponse, error)
 
+    CaptureCharge (string, *models_pkg.CreateCaptureChargeRequest, *string) (*models_pkg.GetChargeResponse, error)
+
     UpdateChargePaymentMethod (string, *models_pkg.UpdateChargePaymentMethodRequest, *string) (*models_pkg.GetChargeResponse, error)
 
     GetChargeTransactions (string, *int64, *int64) (*models_pkg.ListChargeTransactionsResponse, error)
@@ -23,8 +25,6 @@ type CHARGES interface {
     UpdateChargeDueDate (string, *models_pkg.UpdateChargeDueDateRequest, *string) (*models_pkg.GetChargeResponse, error)
 
     GetCharges (*int64, *int64, *string, *string, *string, *string, *string, *time.Time, *time.Time) (*models_pkg.ListChargesResponse, error)
-
-    CaptureCharge (string, *models_pkg.CreateCaptureChargeRequest, *string) (*models_pkg.GetChargeResponse, error)
 
     UpdateChargeCard (string, *models_pkg.UpdateChargeCardRequest, *string) (*models_pkg.GetChargeResponse, error)
 

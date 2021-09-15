@@ -50,7 +50,7 @@ func (me *SELLERS_IMPL) CreateSeller (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "content-type" : "application/json; charset=utf-8",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
@@ -137,7 +137,7 @@ func (me *SELLERS_IMPL) UpdateSellerMetadata (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "content-type" : "application/json; charset=utf-8",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
@@ -224,7 +224,7 @@ func (me *SELLERS_IMPL) UpdateSeller (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "content-type" : "application/json; charset=utf-8",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
@@ -309,7 +309,7 @@ func (me *SELLERS_IMPL) DeleteSeller (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
     }
@@ -391,7 +391,7 @@ func (me *SELLERS_IMPL) GetSellerById (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
     }
 
@@ -496,7 +496,7 @@ func (me *SELLERS_IMPL) GetSellers (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
     }
 

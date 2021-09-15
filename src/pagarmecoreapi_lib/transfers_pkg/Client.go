@@ -56,7 +56,7 @@ func (me *TRANSFERS_IMPL) GetTransferById (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
     }
 
@@ -128,7 +128,7 @@ func (me *TRANSFERS_IMPL) CreateTransfer (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "content-type" : "application/json; charset=utf-8",
     }
@@ -199,7 +199,7 @@ func (me *TRANSFERS_IMPL) GetTransfers () (*models_pkg.ListTransfers, error) {
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
     }
 

@@ -10,12 +10,12 @@ import(
 	"pagarmecoreapi_lib/configuration_pkg"
 	"pagarmecoreapi_lib/plans_pkg"
 	"pagarmecoreapi_lib/subscriptions_pkg"
-	"pagarmecoreapi_lib/invoices_pkg"
 	"pagarmecoreapi_lib/orders_pkg"
+	"pagarmecoreapi_lib/invoices_pkg"
 	"pagarmecoreapi_lib/customers_pkg"
-	"pagarmecoreapi_lib/recipients_pkg"
 	"pagarmecoreapi_lib/charges_pkg"
 	"pagarmecoreapi_lib/transfers_pkg"
+	"pagarmecoreapi_lib/recipients_pkg"
 	"pagarmecoreapi_lib/tokens_pkg"
 	"pagarmecoreapi_lib/sellers_pkg"
 	"pagarmecoreapi_lib/transactions_pkg"
@@ -28,12 +28,12 @@ import(
 type PAGARMECOREAPI interface {
     Plans()                 plans_pkg.PLANS
     Subscriptions()         subscriptions_pkg.SUBSCRIPTIONS
-    Invoices()              invoices_pkg.INVOICES
     Orders()                orders_pkg.ORDERS
+    Invoices()              invoices_pkg.INVOICES
     Customers()             customers_pkg.CUSTOMERS
-    Recipients()            recipients_pkg.RECIPIENTS
     Charges()               charges_pkg.CHARGES
     Transfers()             transfers_pkg.TRANSFERS
+    Recipients()            recipients_pkg.RECIPIENTS
     Tokens()                tokens_pkg.TOKENS
     Sellers()               sellers_pkg.SELLERS
     Transactions()          transactions_pkg.TRANSACTIONS

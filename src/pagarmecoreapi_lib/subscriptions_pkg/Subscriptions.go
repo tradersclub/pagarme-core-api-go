@@ -14,8 +14,6 @@ import "pagarmecoreapi_lib/models_pkg"
  * Interface for the SUBSCRIPTIONS_IMPL
  */
 type SUBSCRIPTIONS interface {
-    RenewSubscription (string, *string) (*models_pkg.GetPeriodResponse, error)
-
     UpdateSubscriptionCard (string, *models_pkg.UpdateSubscriptionCardRequest, *string) (*models_pkg.GetSubscriptionResponse, error)
 
     DeleteUsage (string, string, string, *string) (*models_pkg.GetUsageResponse, error)
@@ -26,11 +24,11 @@ type SUBSCRIPTIONS interface {
 
     UpdateCurrentCycleStatus (string, *models_pkg.UpdateCurrentCycleStatusRequest, *string) (error)
 
+    UpdateSubscriptionPaymentMethod (string, *models_pkg.UpdateSubscriptionPaymentMethodRequest, *string) (*models_pkg.GetSubscriptionResponse, error)
+
     DeleteDiscount (string, string, *string) (*models_pkg.GetDiscountResponse, error)
 
     GetSubscriptionItems (string, *int64, *int64, *string, *string, *string, *string, *string, *string) (*models_pkg.ListSubscriptionItemsResponse, error)
-
-    UpdateSubscriptionPaymentMethod (string, *models_pkg.UpdateSubscriptionPaymentMethodRequest, *string) (*models_pkg.GetSubscriptionResponse, error)
 
     GetSubscriptionItem (string, string) (*models_pkg.GetSubscriptionItemResponse, error)
 
@@ -42,11 +40,9 @@ type SUBSCRIPTIONS interface {
 
     CreateUsage (string, string, *models_pkg.CreateUsageRequest, *string) (*models_pkg.GetUsageResponse, error)
 
-    GetDiscountById (string, string) (*models_pkg.GetDiscountResponse, error)
-
     CreateSubscription (*models_pkg.CreateSubscriptionRequest, *string) (*models_pkg.GetSubscriptionResponse, error)
 
-    GetIncrementById (string, string) (*models_pkg.GetIncrementResponse, error)
+    GetDiscountById (string, string) (*models_pkg.GetDiscountResponse, error)
 
     UpdateSubscriptionAffiliationId (string, *models_pkg.UpdateSubscriptionAffiliationIdRequest, *string) (*models_pkg.GetSubscriptionResponse, error)
 
@@ -55,6 +51,8 @@ type SUBSCRIPTIONS interface {
     DeleteIncrement (string, string, *string) (*models_pkg.GetIncrementResponse, error)
 
     GetSubscriptionCycles (string, string, string) (*models_pkg.ListCyclesResponse, error)
+
+    GetIncrementById (string, string) (*models_pkg.GetIncrementResponse, error)
 
     GetDiscounts (string, int64, int64) (*models_pkg.ListDiscountsResponse, error)
 
@@ -81,6 +79,8 @@ type SUBSCRIPTIONS interface {
     UpdateSubscriptionMiniumPrice (string, *models_pkg.UpdateSubscriptionMinimumPriceRequest, *string) (*models_pkg.GetSubscriptionResponse, error)
 
     GetSubscriptionCycleById (string, string) (*models_pkg.GetPeriodResponse, error)
+
+    RenewSubscription (string, *string) (*models_pkg.GetPeriodResponse, error)
 
     GetUsageReport (string, string) (*models_pkg.GetUsageReportResponse, error)
 }
