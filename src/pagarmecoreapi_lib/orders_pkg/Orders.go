@@ -16,9 +16,9 @@ import "pagarmecoreapi_lib/models_pkg"
 type ORDERS interface {
     GetOrders (*int64, *int64, *string, *string, *time.Time, *time.Time, *string) (*models_pkg.ListOrderResponse, error)
 
-    UpdateOrderItem (string, string, *models_pkg.UpdateOrderItemRequest, *string) (*models_pkg.GetOrderItemResponse, error)
-
     DeleteAllOrderItems (string, *string) (*models_pkg.GetOrderResponse, error)
+
+    UpdateOrderItem (string, string, *models_pkg.UpdateOrderItemRequest, *string) (*models_pkg.GetOrderItemResponse, error)
 
     DeleteOrderItem (string, string, *string) (*models_pkg.GetOrderItemResponse, error)
 

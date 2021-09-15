@@ -14,6 +14,8 @@ import "pagarmecoreapi_lib/models_pkg"
  * Interface for the RECIPIENTS_IMPL
  */
 type RECIPIENTS interface {
+    GetTransfer (string, string) (*models_pkg.GetTransferResponse, error)
+
     UpdateRecipient (string, *models_pkg.UpdateRecipientRequest, *string) (*models_pkg.GetRecipientResponse, error)
 
     CreateAnticipation (string, *models_pkg.CreateAnticipationRequest, *string) (*models_pkg.GetAnticipationResponse, error)
@@ -30,8 +32,6 @@ type RECIPIENTS interface {
 
     GetTransfers (string, *int64, *int64, *string, *time.Time, *time.Time) (*models_pkg.ListTransferResponse, error)
 
-    GetTransfer (string, string) (*models_pkg.GetTransferResponse, error)
-
     CreateWithdraw (string, *models_pkg.CreateWithdrawRequest) (*models_pkg.GetWithdrawResponse, error)
 
     UpdateAutomaticAnticipationSettings (string, *models_pkg.UpdateAutomaticAnticipationSettingsRequest, *string) (*models_pkg.GetRecipientResponse, error)
@@ -44,9 +44,9 @@ type RECIPIENTS interface {
 
     GetRecipient (string) (*models_pkg.GetRecipientResponse, error)
 
-    GetBalance (string) (*models_pkg.GetBalanceResponse, error)
-
     GetWithdrawals (string, *int64, *int64, *string, *time.Time, *time.Time) (*models_pkg.ListWithdrawals, error)
+
+    GetBalance (string) (*models_pkg.GetBalanceResponse, error)
 
     CreateTransfer (string, *models_pkg.CreateTransferRequest, *string) (*models_pkg.GetTransferResponse, error)
 

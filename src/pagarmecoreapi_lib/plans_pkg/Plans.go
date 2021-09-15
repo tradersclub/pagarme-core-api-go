@@ -16,8 +16,6 @@ import "pagarmecoreapi_lib/models_pkg"
 type PLANS interface {
     GetPlan (string) (*models_pkg.GetPlanResponse, error)
 
-    DeletePlan (string, *string) (*models_pkg.GetPlanResponse, error)
-
     UpdatePlanMetadata (string, *models_pkg.UpdateMetadataRequest, *string) (*models_pkg.GetPlanResponse, error)
 
     UpdatePlanItem (string, string, *models_pkg.UpdatePlanItemRequest, *string) (*models_pkg.GetPlanItemResponse, error)
@@ -33,6 +31,8 @@ type PLANS interface {
     GetPlans (*int64, *int64, *string, *string, *string, *time.Time, *time.Time) (*models_pkg.ListPlansResponse, error)
 
     UpdatePlan (string, *models_pkg.UpdatePlanRequest, *string) (*models_pkg.GetPlanResponse, error)
+
+    DeletePlan (string, *string) (*models_pkg.GetPlanResponse, error)
 }
 
 /*

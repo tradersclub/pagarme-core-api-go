@@ -63,7 +63,7 @@ func (me *CUSTOMERS_IMPL) UpdateCard (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "content-type" : "application/json; charset=utf-8",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
@@ -153,7 +153,7 @@ func (me *CUSTOMERS_IMPL) UpdateAddress (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "content-type" : "application/json; charset=utf-8",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
@@ -241,7 +241,7 @@ func (me *CUSTOMERS_IMPL) DeleteAccessToken (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
     }
@@ -289,19 +289,30 @@ func (me *CUSTOMERS_IMPL) DeleteAccessToken (
 }
 
 /**
- * Creates a new customer
- * @param    *models_pkg.CreateCustomerRequest        request             parameter: Required
- * @param    *string                                  idempotencyKey      parameter: Optional
- * @return	Returns the *models_pkg.GetCustomerResponse response from the API call
+ * Creates a access token for a customer
+ * @param    string                                      customerId          parameter: Required
+ * @param    *models_pkg.CreateAccessTokenRequest        request             parameter: Required
+ * @param    *string                                     idempotencyKey      parameter: Optional
+ * @return	Returns the *models_pkg.GetAccessTokenResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) CreateCustomer (
-            request *models_pkg.CreateCustomerRequest,
-            idempotencyKey *string) (*models_pkg.GetCustomerResponse, error) {
+func (me *CUSTOMERS_IMPL) CreateAccessToken (
+            customerId string,
+            request *models_pkg.CreateAccessTokenRequest,
+            idempotencyKey *string) (*models_pkg.GetAccessTokenResponse, error) {
     //the endpoint path uri
-    _pathUrl := "/customers"
+    _pathUrl := "/customers/{customer_id}/access-tokens"
 
     //variable to hold errors
     var err error = nil
+    //process optional template parameters
+    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
+        "customer_id" : customerId,
+    })
+    if err != nil {
+        //error in template param handling
+        return nil, err
+    }
+
     //the base uri for api requests
     _queryBuilder := configuration_pkg.BASEURI;
 
@@ -316,7 +327,7 @@ func (me *CUSTOMERS_IMPL) CreateCustomer (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "content-type" : "application/json; charset=utf-8",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
@@ -353,7 +364,7 @@ func (me *CUSTOMERS_IMPL) CreateCustomer (
     }
 
     //returning the response
-    var retVal *models_pkg.GetCustomerResponse = &models_pkg.GetCustomerResponse{}
+    var retVal *models_pkg.GetAccessTokenResponse = &models_pkg.GetAccessTokenResponse{}
     err = json.Unmarshal(_response.RawBody, &retVal)
 
     if err != nil {
@@ -403,7 +414,7 @@ func (me *CUSTOMERS_IMPL) CreateAddress (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "content-type" : "application/json; charset=utf-8",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
@@ -452,6 +463,82 @@ func (me *CUSTOMERS_IMPL) CreateAddress (
 }
 
 /**
+ * Creates a new customer
+ * @param    *models_pkg.CreateCustomerRequest        request             parameter: Required
+ * @param    *string                                  idempotencyKey      parameter: Optional
+ * @return	Returns the *models_pkg.GetCustomerResponse response from the API call
+ */
+func (me *CUSTOMERS_IMPL) CreateCustomer (
+            request *models_pkg.CreateCustomerRequest,
+            idempotencyKey *string) (*models_pkg.GetCustomerResponse, error) {
+    //the endpoint path uri
+    _pathUrl := "/customers"
+
+    //variable to hold errors
+    var err error = nil
+    //the base uri for api requests
+    _queryBuilder := configuration_pkg.BASEURI;
+
+    //prepare query string for API call
+   _queryBuilder = _queryBuilder + _pathUrl
+
+    //validate and preprocess url
+    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+    if err != nil {
+        //error in url validation or cleaning
+        return nil, err
+    }
+    //prepare headers for the outgoing request
+    headers := map[string]interface{} {
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
+        "accept" : "application/json",
+        "content-type" : "application/json; charset=utf-8",
+        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
+    }
+
+    //prepare API request
+    _request := unirest.PostWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+    //and invoke the API call request to fetch the response
+    _response, err := unirest.AsString(_request,false);
+    if err != nil {
+        //error in API invocation
+        return nil, err
+    }
+
+    //error handling using HTTP status codes
+    if (_response.Code == 400) {
+        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+    } else if (_response.Code == 401) {
+        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+    } else if (_response.Code == 404) {
+        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+    } else if (_response.Code == 412) {
+        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+    } else if (_response.Code == 422) {
+        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+    } else if (_response.Code == 500) {
+        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+    }
+    if(err != nil) {
+        //error detected in status code validation
+        return nil, err
+    }
+
+    //returning the response
+    var retVal *models_pkg.GetCustomerResponse = &models_pkg.GetCustomerResponse{}
+    err = json.Unmarshal(_response.RawBody, &retVal)
+
+    if err != nil {
+        //error in parsing
+        return nil, err
+    }
+    return retVal, nil
+
+}
+
+/**
  * Delete a Customer's access tokens
  * @param    string        customerId      parameter: Required
  * @return	Returns the *models_pkg.ListAccessTokensResponse response from the API call
@@ -486,7 +573,7 @@ func (me *CUSTOMERS_IMPL) DeleteAccessTokens (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
     }
 
@@ -570,7 +657,7 @@ func (me *CUSTOMERS_IMPL) GetAddress (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
     }
 
@@ -656,7 +743,7 @@ func (me *CUSTOMERS_IMPL) DeleteAddress (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
     }
@@ -742,7 +829,7 @@ func (me *CUSTOMERS_IMPL) CreateCard (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "content-type" : "application/json; charset=utf-8",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
@@ -840,7 +927,7 @@ func (me *CUSTOMERS_IMPL) GetCustomers (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
     }
 
@@ -925,7 +1012,7 @@ func (me *CUSTOMERS_IMPL) UpdateCustomer (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "content-type" : "application/json; charset=utf-8",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
@@ -963,93 +1050,6 @@ func (me *CUSTOMERS_IMPL) UpdateCustomer (
 
     //returning the response
     var retVal *models_pkg.GetCustomerResponse = &models_pkg.GetCustomerResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
-
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
-
-}
-
-/**
- * Creates a access token for a customer
- * @param    string                                      customerId          parameter: Required
- * @param    *models_pkg.CreateAccessTokenRequest        request             parameter: Required
- * @param    *string                                     idempotencyKey      parameter: Optional
- * @return	Returns the *models_pkg.GetAccessTokenResponse response from the API call
- */
-func (me *CUSTOMERS_IMPL) CreateAccessToken (
-            customerId string,
-            request *models_pkg.CreateAccessTokenRequest,
-            idempotencyKey *string) (*models_pkg.GetAccessTokenResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/access-tokens"
-
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
-
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
-
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
-
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
-    }
-
-    //prepare API request
-    _request := unirest.PostWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
-
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
-
-    //returning the response
-    var retVal *models_pkg.GetAccessTokenResponse = &models_pkg.GetAccessTokenResponse{}
     err = json.Unmarshal(_response.RawBody, &retVal)
 
     if err != nil {
@@ -1109,7 +1109,7 @@ func (me *CUSTOMERS_IMPL) GetAccessTokens (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
     }
 
@@ -1204,7 +1204,7 @@ func (me *CUSTOMERS_IMPL) GetCards (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
     }
 
@@ -1290,7 +1290,7 @@ func (me *CUSTOMERS_IMPL) RenewCard (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
     }
@@ -1375,7 +1375,7 @@ func (me *CUSTOMERS_IMPL) GetAccessToken (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
     }
 
@@ -1460,7 +1460,7 @@ func (me *CUSTOMERS_IMPL) UpdateCustomerMetadata (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "content-type" : "application/json; charset=utf-8",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
@@ -1548,7 +1548,7 @@ func (me *CUSTOMERS_IMPL) DeleteCard (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
         "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
     }
@@ -1644,7 +1644,7 @@ func (me *CUSTOMERS_IMPL) GetAddresses (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
     }
 
@@ -1725,7 +1725,7 @@ func (me *CUSTOMERS_IMPL) GetCustomer (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
     }
 
@@ -1809,7 +1809,7 @@ func (me *CUSTOMERS_IMPL) GetCard (
     }
     //prepare headers for the outgoing request
     headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.0",
+        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
         "accept" : "application/json",
     }
 
