@@ -761,7 +761,7 @@ type GetSellersRequest struct {
  */
 type CreateOrderRequest struct {
 	Items            []*CreateOrderItemRequest `json:"items" form:"items"`                                             //Items
-	Customer         CreateCustomerRequest     `json:"customer" form:"customer"`                                       //Customer
+	Customer         *CreateCustomerRequest    `json:"customer,omitempty" form:"customer,omitempty"`                   //Customer
 	Payments         []*CreatePaymentRequest   `json:"payments" form:"payments"`                                       //Payment data
 	Code             string                    `json:"code" form:"code"`                                               //The order code
 	CustomerId       string                    `json:"customer_id" form:"customer_id"`                                 //The customer id
@@ -1449,7 +1449,7 @@ type CreatePaymentRequest struct {
 	Customer             *CreateCustomerRequest            `json:"customer,omitempty" form:"customer,omitempty"`                             //Customer
 	Metadata             *map[string]string                `json:"metadata,omitempty" form:"metadata,omitempty"`                             //Metadata
 	Cash                 *CreateCashPaymentRequest         `json:"cash,omitempty" form:"cash,omitempty"`                                     //Settings for cash payment
-	PrivateLabel         CreatePrivateLabelPaymentRequest  `json:"private_label" form:"private_label"`                                       //Settings for private label payment
+	PrivateLabel         *CreatePrivateLabelPaymentRequest `json:"private_label,omitempty" form:"private_label,omitempty"`                   //Settings for private label payment
 	Pix                  *CreatePixPaymentRequest          `json:"pix,omitempty" form:"pix,omitempty"`                                       //Settings for pix payment
 }
 
