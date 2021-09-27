@@ -6,49 +6,48 @@
 
 package PagarmeCoreApiClient
 
-import(
-	"pagarmecoreapi_lib/configuration_pkg"
-	"pagarmecoreapi_lib/plans_pkg"
-	"pagarmecoreapi_lib/subscriptions_pkg"
-	"pagarmecoreapi_lib/orders_pkg"
-	"pagarmecoreapi_lib/invoices_pkg"
-	"pagarmecoreapi_lib/customers_pkg"
-	"pagarmecoreapi_lib/charges_pkg"
-	"pagarmecoreapi_lib/transfers_pkg"
-	"pagarmecoreapi_lib/recipients_pkg"
-	"pagarmecoreapi_lib/tokens_pkg"
-	"pagarmecoreapi_lib/sellers_pkg"
-	"pagarmecoreapi_lib/transactions_pkg"
+import (
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/charges_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/configuration_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/customers_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/invoices_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/orders_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/plans_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/recipients_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/sellers_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/subscriptions_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/tokens_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/transactions_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/transfers_pkg"
 )
-
 
 /*
  * Interface for the PAGARMECOREAPI_IMPL
  */
 type PAGARMECOREAPI interface {
-    Plans()                 plans_pkg.PLANS
-    Subscriptions()         subscriptions_pkg.SUBSCRIPTIONS
-    Orders()                orders_pkg.ORDERS
-    Invoices()              invoices_pkg.INVOICES
-    Customers()             customers_pkg.CUSTOMERS
-    Charges()               charges_pkg.CHARGES
-    Transfers()             transfers_pkg.TRANSFERS
-    Recipients()            recipients_pkg.RECIPIENTS
-    Tokens()                tokens_pkg.TOKENS
-    Sellers()               sellers_pkg.SELLERS
-    Transactions()          transactions_pkg.TRANSACTIONS
-    Configuration()         configuration_pkg.CONFIGURATION
+	Plans() plans_pkg.PLANS
+	Subscriptions() subscriptions_pkg.SUBSCRIPTIONS
+	Orders() orders_pkg.ORDERS
+	Invoices() invoices_pkg.INVOICES
+	Customers() customers_pkg.CUSTOMERS
+	Charges() charges_pkg.CHARGES
+	Transfers() transfers_pkg.TRANSFERS
+	Recipients() recipients_pkg.RECIPIENTS
+	Tokens() tokens_pkg.TOKENS
+	Sellers() sellers_pkg.SELLERS
+	Transactions() transactions_pkg.TRANSACTIONS
+	Configuration() configuration_pkg.CONFIGURATION
 }
 
 /*
  * Factory for the PAGARMECOREAPI interface returning PAGARMECOREAPI_IMPL
  */
 func NewPAGARMECOREAPI(basicAuthUserName string, basicAuthPassword string) PAGARMECOREAPI {
-    pagarmeCoreApiClient := new(PAGARMECOREAPI_IMPL)
-    pagarmeCoreApiClient.config = configuration_pkg.NewCONFIGURATION()
+	pagarmeCoreApiClient := new(PAGARMECOREAPI_IMPL)
+	pagarmeCoreApiClient.config = configuration_pkg.NewCONFIGURATION()
 
-    pagarmeCoreApiClient.config.SetBasicAuthUserName(basicAuthUserName)
-    pagarmeCoreApiClient.config.SetBasicAuthPassword(basicAuthPassword)
+	pagarmeCoreApiClient.config.SetBasicAuthUserName(basicAuthUserName)
+	pagarmeCoreApiClient.config.SetBasicAuthPassword(basicAuthPassword)
 
-    return pagarmeCoreApiClient
+	return pagarmeCoreApiClient
 }

@@ -6,19 +6,17 @@
 
 package configuration_pkg
 
-
-
 type CONFIGURATION interface {
-        BasicAuthUserName() string
-        SetBasicAuthUserName(basicAuthUserName   string)
-        BasicAuthPassword() string
-        SetBasicAuthPassword(basicAuthPassword   string)
+	BasicAuthUserName() string
+	SetBasicAuthUserName(basicAuthUserName string)
+	BasicAuthPassword() string
+	SetBasicAuthPassword(basicAuthPassword string)
 }
 
 /*
  * Factory for the CONFIGURATION interface returning CONFIGURATION_IMPL
  */
-func NewCONFIGURATION() CONFIGURATION{
-    configuration := new(CONFIGURATION_IMPL)
-    return configuration
+func NewCONFIGURATION() CONFIGURATION {
+	configuration := new(CONFIGURATION_IMPL)
+	return configuration
 }

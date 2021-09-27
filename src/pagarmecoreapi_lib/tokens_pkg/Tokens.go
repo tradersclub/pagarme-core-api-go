@@ -6,23 +6,23 @@
 
 package tokens_pkg
 
-import "pagarmecoreapi_lib/configuration_pkg"
-import "pagarmecoreapi_lib/models_pkg"
+import "github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/configuration_pkg"
+import "github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/models_pkg"
 
 /*
  * Interface for the TOKENS_IMPL
  */
 type TOKENS interface {
-    CreateToken (string, *models_pkg.CreateTokenRequest, *string) (*models_pkg.GetTokenResponse, error)
+	CreateToken(string, *models_pkg.CreateTokenRequest, *string) (*models_pkg.GetTokenResponse, error)
 
-    GetToken (string, string) (*models_pkg.GetTokenResponse, error)
+	GetToken(string, string) (*models_pkg.GetTokenResponse, error)
 }
 
 /*
  * Factory for the TOKENS interaface returning TOKENS_IMPL
  */
 func NewTOKENS(config configuration_pkg.CONFIGURATION) *TOKENS_IMPL {
-    client := new(TOKENS_IMPL)
-    client.config = config
-    return client
+	client := new(TOKENS_IMPL)
+	client.config = config
+	return client
 }

@@ -7,31 +7,31 @@
 package sellers_pkg
 
 import "time"
-import "pagarmecoreapi_lib/configuration_pkg"
-import "pagarmecoreapi_lib/models_pkg"
+import "github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/configuration_pkg"
+import "github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/models_pkg"
 
 /*
  * Interface for the SELLERS_IMPL
  */
 type SELLERS interface {
-    CreateSeller (*models_pkg.CreateSellerRequest, *string) (*models_pkg.GetSellerResponse, error)
+	CreateSeller(*models_pkg.CreateSellerRequest, *string) (*models_pkg.GetSellerResponse, error)
 
-    UpdateSellerMetadata (string, *models_pkg.UpdateMetadataRequest, *string) (*models_pkg.GetSellerResponse, error)
+	UpdateSellerMetadata(string, *models_pkg.UpdateMetadataRequest, *string) (*models_pkg.GetSellerResponse, error)
 
-    UpdateSeller (string, *models_pkg.UpdateSellerRequest, *string) (*models_pkg.GetSellerResponse, error)
+	UpdateSeller(string, *models_pkg.UpdateSellerRequest, *string) (*models_pkg.GetSellerResponse, error)
 
-    DeleteSeller (string, *string) (*models_pkg.GetSellerResponse, error)
+	DeleteSeller(string, *string) (*models_pkg.GetSellerResponse, error)
 
-    GetSellerById (string) (*models_pkg.GetSellerResponse, error)
+	GetSellerById(string) (*models_pkg.GetSellerResponse, error)
 
-    GetSellers (*int64, *int64, *string, *string, *string, *string, *string, *time.Time, *time.Time) (*models_pkg.ListSellerResponse, error)
+	GetSellers(*int64, *int64, *string, *string, *string, *string, *string, *time.Time, *time.Time) (*models_pkg.ListSellerResponse, error)
 }
 
 /*
  * Factory for the SELLERS interaface returning SELLERS_IMPL
  */
 func NewSELLERS(config configuration_pkg.CONFIGURATION) *SELLERS_IMPL {
-    client := new(SELLERS_IMPL)
-    client.config = config
-    return client
+	client := new(SELLERS_IMPL)
+	client.config = config
+	return client
 }

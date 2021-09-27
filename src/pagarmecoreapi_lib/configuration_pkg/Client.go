@@ -6,46 +6,42 @@
 
 package configuration_pkg
 
-
 /** The base Uri for API calls */
 const BASEURI string = "https://api.pagar.me/core/v5"
 
-
-
 type CONFIGURATION_IMPL struct {
-    /** The username to use with basic authentication */
-    /** Replace the value of basicauthusername with SetBasicAuthUserName function */
-    basicauthusername string
-    /** The password to use with basic authentication */
-    /** Replace the value of basicauthpassword with SetBasicAuthPassword function */
-    basicauthpassword string
+	/** The username to use with basic authentication */
+	/** Replace the value of basicauthusername with SetBasicAuthUserName function */
+	basicauthusername string
+	/** The password to use with basic authentication */
+	/** Replace the value of basicauthpassword with SetBasicAuthPassword function */
+	basicauthpassword string
 }
 
 /*
  * Getter function returning basicauthusername
  */
-func (me *CONFIGURATION_IMPL) BasicAuthUserName() string{
-    return me.basicauthusername
+func (me *CONFIGURATION_IMPL) BasicAuthUserName() string {
+	return me.basicauthusername
 }
 
 /*
  * Setter function setting up basicauthusername
  */
 func (me *CONFIGURATION_IMPL) SetBasicAuthUserName(basicAuthUserName string) {
-    me.basicauthusername = basicAuthUserName
+	me.basicauthusername = basicAuthUserName
 }
 
 /*
  * Getter function returning basicauthpassword
  */
-func (me *CONFIGURATION_IMPL) BasicAuthPassword() string{
-    return me.basicauthpassword
+func (me *CONFIGURATION_IMPL) BasicAuthPassword() string {
+	return me.basicauthpassword
 }
 
 /*
  * Setter function setting up basicauthpassword
  */
 func (me *CONFIGURATION_IMPL) SetBasicAuthPassword(basicAuthPassword string) {
-    me.basicauthpassword = basicAuthPassword
+	me.basicauthpassword = basicAuthPassword
 }
-

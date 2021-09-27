@@ -6,19 +6,19 @@
 
 package customers_pkg
 
-
-import(
+import (
 	"encoding/json"
 	"github.com/apimatic/unirest-go"
-	"pagarmecoreapi_lib/apihelper_pkg"
-	"pagarmecoreapi_lib/configuration_pkg"
-	"pagarmecoreapi_lib/models_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/apihelper_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/configuration_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/models_pkg"
 )
+
 /*
  * Client structure as interface implementation
  */
 type CUSTOMERS_IMPL struct {
-     config configuration_pkg.CONFIGURATION
+	config configuration_pkg.CONFIGURATION
 }
 
 /**
@@ -29,85 +29,85 @@ type CUSTOMERS_IMPL struct {
  * @param    *string                              idempotencyKey      parameter: Optional
  * @return	Returns the *models_pkg.GetCardResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) UpdateCard (
-            customerId string,
-            cardId string,
-            request *models_pkg.UpdateCardRequest,
-            idempotencyKey *string) (*models_pkg.GetCardResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/cards/{card_id}"
+func (me *CUSTOMERS_IMPL) UpdateCard(
+	customerId string,
+	cardId string,
+	request *models_pkg.UpdateCardRequest,
+	idempotencyKey *string) (*models_pkg.GetCardResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/cards/{card_id}"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-        "card_id" : cardId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+		"card_id":     cardId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":      "PagarmeCoreApi - Go 5.0.1",
+		"accept":          "application/json",
+		"content-type":    "application/json; charset=utf-8",
+		"idempotency-key": apihelper_pkg.ToString(idempotencyKey, ""),
+	}
 
-    //prepare API request
-    _request := unirest.PutWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.PutWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetCardResponse = &models_pkg.GetCardResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetCardResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -119,85 +119,85 @@ func (me *CUSTOMERS_IMPL) UpdateCard (
  * @param    *string                                 idempotencyKey      parameter: Optional
  * @return	Returns the *models_pkg.GetAddressResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) UpdateAddress (
-            customerId string,
-            addressId string,
-            request *models_pkg.UpdateAddressRequest,
-            idempotencyKey *string) (*models_pkg.GetAddressResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/addresses/{address_id}"
+func (me *CUSTOMERS_IMPL) UpdateAddress(
+	customerId string,
+	addressId string,
+	request *models_pkg.UpdateAddressRequest,
+	idempotencyKey *string) (*models_pkg.GetAddressResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/addresses/{address_id}"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-        "address_id" : addressId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+		"address_id":  addressId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":      "PagarmeCoreApi - Go 5.0.1",
+		"accept":          "application/json",
+		"content-type":    "application/json; charset=utf-8",
+		"idempotency-key": apihelper_pkg.ToString(idempotencyKey, ""),
+	}
 
-    //prepare API request
-    _request := unirest.PutWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.PutWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetAddressResponse = &models_pkg.GetAddressResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetAddressResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -208,83 +208,83 @@ func (me *CUSTOMERS_IMPL) UpdateAddress (
  * @param    *string        idempotencyKey      parameter: Optional
  * @return	Returns the *models_pkg.GetAccessTokenResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) DeleteAccessToken (
-            customerId string,
-            tokenId string,
-            idempotencyKey *string) (*models_pkg.GetAccessTokenResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/access-tokens/{token_id}"
+func (me *CUSTOMERS_IMPL) DeleteAccessToken(
+	customerId string,
+	tokenId string,
+	idempotencyKey *string) (*models_pkg.GetAccessTokenResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/access-tokens/{token_id}"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-        "token_id" : tokenId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+		"token_id":    tokenId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":      "PagarmeCoreApi - Go 5.0.1",
+		"accept":          "application/json",
+		"idempotency-key": apihelper_pkg.ToString(idempotencyKey, ""),
+	}
 
-    //prepare API request
-    _request := unirest.DeleteWithAuth(_queryBuilder, headers, nil, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.DeleteWithAuth(_queryBuilder, headers, nil, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetAccessTokenResponse = &models_pkg.GetAccessTokenResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetAccessTokenResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -295,83 +295,83 @@ func (me *CUSTOMERS_IMPL) DeleteAccessToken (
  * @param    *string                                     idempotencyKey      parameter: Optional
  * @return	Returns the *models_pkg.GetAccessTokenResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) CreateAccessToken (
-            customerId string,
-            request *models_pkg.CreateAccessTokenRequest,
-            idempotencyKey *string) (*models_pkg.GetAccessTokenResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/access-tokens"
+func (me *CUSTOMERS_IMPL) CreateAccessToken(
+	customerId string,
+	request *models_pkg.CreateAccessTokenRequest,
+	idempotencyKey *string) (*models_pkg.GetAccessTokenResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/access-tokens"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":      "PagarmeCoreApi - Go 5.0.1",
+		"accept":          "application/json",
+		"content-type":    "application/json; charset=utf-8",
+		"idempotency-key": apihelper_pkg.ToString(idempotencyKey, ""),
+	}
 
-    //prepare API request
-    _request := unirest.PostWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.PostWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetAccessTokenResponse = &models_pkg.GetAccessTokenResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetAccessTokenResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -382,83 +382,83 @@ func (me *CUSTOMERS_IMPL) CreateAccessToken (
  * @param    *string                                 idempotencyKey      parameter: Optional
  * @return	Returns the *models_pkg.GetAddressResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) CreateAddress (
-            customerId string,
-            request *models_pkg.CreateAddressRequest,
-            idempotencyKey *string) (*models_pkg.GetAddressResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/addresses"
+func (me *CUSTOMERS_IMPL) CreateAddress(
+	customerId string,
+	request *models_pkg.CreateAddressRequest,
+	idempotencyKey *string) (*models_pkg.GetAddressResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/addresses"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":      "PagarmeCoreApi - Go 5.0.1",
+		"accept":          "application/json",
+		"content-type":    "application/json; charset=utf-8",
+		"idempotency-key": apihelper_pkg.ToString(idempotencyKey, ""),
+	}
 
-    //prepare API request
-    _request := unirest.PostWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.PostWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetAddressResponse = &models_pkg.GetAddressResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetAddressResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -468,73 +468,73 @@ func (me *CUSTOMERS_IMPL) CreateAddress (
  * @param    *string                                  idempotencyKey      parameter: Optional
  * @return	Returns the *models_pkg.GetCustomerResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) CreateCustomer (
-            request *models_pkg.CreateCustomerRequest,
-            idempotencyKey *string) (*models_pkg.GetCustomerResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers"
+func (me *CUSTOMERS_IMPL) CreateCustomer(
+	request *models_pkg.CreateCustomerRequest,
+	idempotencyKey *string) (*models_pkg.GetCustomerResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers"
 
-    //variable to hold errors
-    var err error = nil
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//variable to hold errors
+	var err error = nil
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":      "PagarmeCoreApi - Go 5.0.1",
+		"accept":          "application/json",
+		"content-type":    "application/json; charset=utf-8",
+		"idempotency-key": apihelper_pkg.ToString(idempotencyKey, ""),
+	}
 
-    //prepare API request
-    _request := unirest.PostWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.PostWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetCustomerResponse = &models_pkg.GetCustomerResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetCustomerResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -543,79 +543,79 @@ func (me *CUSTOMERS_IMPL) CreateCustomer (
  * @param    string        customerId      parameter: Required
  * @return	Returns the *models_pkg.ListAccessTokensResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) DeleteAccessTokens (
-            customerId string) (*models_pkg.ListAccessTokensResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/access-tokens/"
+func (me *CUSTOMERS_IMPL) DeleteAccessTokens(
+	customerId string) (*models_pkg.ListAccessTokensResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/access-tokens/"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent": "PagarmeCoreApi - Go 5.0.1",
+		"accept":     "application/json",
+	}
 
-    //prepare API request
-    _request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.ListAccessTokensResponse = &models_pkg.ListAccessTokensResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.ListAccessTokensResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -625,81 +625,81 @@ func (me *CUSTOMERS_IMPL) DeleteAccessTokens (
  * @param    string        addressId       parameter: Required
  * @return	Returns the *models_pkg.GetAddressResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) GetAddress (
-            customerId string,
-            addressId string) (*models_pkg.GetAddressResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/addresses/{address_id}"
+func (me *CUSTOMERS_IMPL) GetAddress(
+	customerId string,
+	addressId string) (*models_pkg.GetAddressResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/addresses/{address_id}"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-        "address_id" : addressId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+		"address_id":  addressId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent": "PagarmeCoreApi - Go 5.0.1",
+		"accept":     "application/json",
+	}
 
-    //prepare API request
-    _request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetAddressResponse = &models_pkg.GetAddressResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetAddressResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -710,83 +710,83 @@ func (me *CUSTOMERS_IMPL) GetAddress (
  * @param    *string        idempotencyKey      parameter: Optional
  * @return	Returns the *models_pkg.GetAddressResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) DeleteAddress (
-            customerId string,
-            addressId string,
-            idempotencyKey *string) (*models_pkg.GetAddressResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/addresses/{address_id}"
+func (me *CUSTOMERS_IMPL) DeleteAddress(
+	customerId string,
+	addressId string,
+	idempotencyKey *string) (*models_pkg.GetAddressResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/addresses/{address_id}"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-        "address_id" : addressId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+		"address_id":  addressId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":      "PagarmeCoreApi - Go 5.0.1",
+		"accept":          "application/json",
+		"idempotency-key": apihelper_pkg.ToString(idempotencyKey, ""),
+	}
 
-    //prepare API request
-    _request := unirest.DeleteWithAuth(_queryBuilder, headers, nil, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.DeleteWithAuth(_queryBuilder, headers, nil, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetAddressResponse = &models_pkg.GetAddressResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetAddressResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -797,83 +797,83 @@ func (me *CUSTOMERS_IMPL) DeleteAddress (
  * @param    *string                              idempotencyKey      parameter: Optional
  * @return	Returns the *models_pkg.GetCardResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) CreateCard (
-            customerId string,
-            request *models_pkg.CreateCardRequest,
-            idempotencyKey *string) (*models_pkg.GetCardResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/cards"
+func (me *CUSTOMERS_IMPL) CreateCard(
+	customerId string,
+	request *models_pkg.CreateCardRequest,
+	idempotencyKey *string) (*models_pkg.GetCardResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/cards"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":      "PagarmeCoreApi - Go 5.0.1",
+		"accept":          "application/json",
+		"content-type":    "application/json; charset=utf-8",
+		"idempotency-key": apihelper_pkg.ToString(idempotencyKey, ""),
+	}
 
-    //prepare API request
-    _request := unirest.PostWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.PostWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetCardResponse = &models_pkg.GetCardResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetCardResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -887,89 +887,89 @@ func (me *CUSTOMERS_IMPL) CreateCard (
  * @param    *string        code         parameter: Optional
  * @return	Returns the *models_pkg.ListCustomersResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) GetCustomers (
-            name *string,
-            document *string,
-            page *int64,
-            size *int64,
-            email *string,
-            code *string) (*models_pkg.ListCustomersResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers"
+func (me *CUSTOMERS_IMPL) GetCustomers(
+	name *string,
+	document *string,
+	page *int64,
+	size *int64,
+	email *string,
+	code *string) (*models_pkg.ListCustomersResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers"
 
-    //variable to hold errors
-    var err error = nil
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//variable to hold errors
+	var err error = nil
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //process optional query parameters
-    _queryBuilder, err = apihelper_pkg.AppendUrlWithQueryParameters(_queryBuilder, map[string]interface{} {
-        "name" : name,
-        "document" : document,
-        "page" : apihelper_pkg.ToString(*page, "1"),
-        "size" : apihelper_pkg.ToString(*size, "10"),
-        "email" : email,
-        "Code" : code,
-    })
-    if err != nil {
-        //error in query param handling
-        return nil, err
-    }
+	//process optional query parameters
+	_queryBuilder, err = apihelper_pkg.AppendUrlWithQueryParameters(_queryBuilder, map[string]interface{}{
+		"name":     name,
+		"document": document,
+		"page":     apihelper_pkg.ToString(*page, "1"),
+		"size":     apihelper_pkg.ToString(*size, "10"),
+		"email":    email,
+		"Code":     code,
+	})
+	if err != nil {
+		//error in query param handling
+		return nil, err
+	}
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent": "PagarmeCoreApi - Go 5.0.1",
+		"accept":     "application/json",
+	}
 
-    //prepare API request
-    _request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.ListCustomersResponse = &models_pkg.ListCustomersResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.ListCustomersResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -980,83 +980,83 @@ func (me *CUSTOMERS_IMPL) GetCustomers (
  * @param    *string                                  idempotencyKey      parameter: Optional
  * @return	Returns the *models_pkg.GetCustomerResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) UpdateCustomer (
-            customerId string,
-            request *models_pkg.UpdateCustomerRequest,
-            idempotencyKey *string) (*models_pkg.GetCustomerResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}"
+func (me *CUSTOMERS_IMPL) UpdateCustomer(
+	customerId string,
+	request *models_pkg.UpdateCustomerRequest,
+	idempotencyKey *string) (*models_pkg.GetCustomerResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":      "PagarmeCoreApi - Go 5.0.1",
+		"accept":          "application/json",
+		"content-type":    "application/json; charset=utf-8",
+		"idempotency-key": apihelper_pkg.ToString(idempotencyKey, ""),
+	}
 
-    //prepare API request
-    _request := unirest.PutWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.PutWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetCustomerResponse = &models_pkg.GetCustomerResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetCustomerResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -1067,91 +1067,91 @@ func (me *CUSTOMERS_IMPL) UpdateCustomer (
  * @param    *int64        size            parameter: Optional
  * @return	Returns the *models_pkg.ListAccessTokensResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) GetAccessTokens (
-            customerId string,
-            page *int64,
-            size *int64) (*models_pkg.ListAccessTokensResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/access-tokens"
+func (me *CUSTOMERS_IMPL) GetAccessTokens(
+	customerId string,
+	page *int64,
+	size *int64) (*models_pkg.ListAccessTokensResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/access-tokens"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //process optional query parameters
-    _queryBuilder, err = apihelper_pkg.AppendUrlWithQueryParameters(_queryBuilder, map[string]interface{} {
-        "page" : page,
-        "size" : size,
-    })
-    if err != nil {
-        //error in query param handling
-        return nil, err
-    }
+	//process optional query parameters
+	_queryBuilder, err = apihelper_pkg.AppendUrlWithQueryParameters(_queryBuilder, map[string]interface{}{
+		"page": page,
+		"size": size,
+	})
+	if err != nil {
+		//error in query param handling
+		return nil, err
+	}
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent": "PagarmeCoreApi - Go 5.0.1",
+		"accept":     "application/json",
+	}
 
-    //prepare API request
-    _request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.ListAccessTokensResponse = &models_pkg.ListAccessTokensResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.ListAccessTokensResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -1162,91 +1162,91 @@ func (me *CUSTOMERS_IMPL) GetAccessTokens (
  * @param    *int64        size            parameter: Optional
  * @return	Returns the *models_pkg.ListCardsResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) GetCards (
-            customerId string,
-            page *int64,
-            size *int64) (*models_pkg.ListCardsResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/cards"
+func (me *CUSTOMERS_IMPL) GetCards(
+	customerId string,
+	page *int64,
+	size *int64) (*models_pkg.ListCardsResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/cards"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //process optional query parameters
-    _queryBuilder, err = apihelper_pkg.AppendUrlWithQueryParameters(_queryBuilder, map[string]interface{} {
-        "page" : page,
-        "size" : size,
-    })
-    if err != nil {
-        //error in query param handling
-        return nil, err
-    }
+	//process optional query parameters
+	_queryBuilder, err = apihelper_pkg.AppendUrlWithQueryParameters(_queryBuilder, map[string]interface{}{
+		"page": page,
+		"size": size,
+	})
+	if err != nil {
+		//error in query param handling
+		return nil, err
+	}
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent": "PagarmeCoreApi - Go 5.0.1",
+		"accept":     "application/json",
+	}
 
-    //prepare API request
-    _request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.ListCardsResponse = &models_pkg.ListCardsResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.ListCardsResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -1257,83 +1257,83 @@ func (me *CUSTOMERS_IMPL) GetCards (
  * @param    *string        idempotencyKey      parameter: Optional
  * @return	Returns the *models_pkg.GetCardResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) RenewCard (
-            customerId string,
-            cardId string,
-            idempotencyKey *string) (*models_pkg.GetCardResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/cards/{card_id}/renew"
+func (me *CUSTOMERS_IMPL) RenewCard(
+	customerId string,
+	cardId string,
+	idempotencyKey *string) (*models_pkg.GetCardResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/cards/{card_id}/renew"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-        "card_id" : cardId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+		"card_id":     cardId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":      "PagarmeCoreApi - Go 5.0.1",
+		"accept":          "application/json",
+		"idempotency-key": apihelper_pkg.ToString(idempotencyKey, ""),
+	}
 
-    //prepare API request
-    _request := unirest.PostWithAuth(_queryBuilder, headers, nil, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.PostWithAuth(_queryBuilder, headers, nil, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetCardResponse = &models_pkg.GetCardResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetCardResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -1343,81 +1343,81 @@ func (me *CUSTOMERS_IMPL) RenewCard (
  * @param    string        tokenId         parameter: Required
  * @return	Returns the *models_pkg.GetAccessTokenResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) GetAccessToken (
-            customerId string,
-            tokenId string) (*models_pkg.GetAccessTokenResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/access-tokens/{token_id}"
+func (me *CUSTOMERS_IMPL) GetAccessToken(
+	customerId string,
+	tokenId string) (*models_pkg.GetAccessTokenResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/access-tokens/{token_id}"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-        "token_id" : tokenId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+		"token_id":    tokenId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent": "PagarmeCoreApi - Go 5.0.1",
+		"accept":     "application/json",
+	}
 
-    //prepare API request
-    _request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetAccessTokenResponse = &models_pkg.GetAccessTokenResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetAccessTokenResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -1428,83 +1428,83 @@ func (me *CUSTOMERS_IMPL) GetAccessToken (
  * @param    *string                                  idempotencyKey      parameter: Optional
  * @return	Returns the *models_pkg.GetCustomerResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) UpdateCustomerMetadata (
-            customerId string,
-            request *models_pkg.UpdateMetadataRequest,
-            idempotencyKey *string) (*models_pkg.GetCustomerResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/Customers/{customer_id}/metadata"
+func (me *CUSTOMERS_IMPL) UpdateCustomerMetadata(
+	customerId string,
+	request *models_pkg.UpdateMetadataRequest,
+	idempotencyKey *string) (*models_pkg.GetCustomerResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/Customers/{customer_id}/metadata"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":      "PagarmeCoreApi - Go 5.0.1",
+		"accept":          "application/json",
+		"content-type":    "application/json; charset=utf-8",
+		"idempotency-key": apihelper_pkg.ToString(idempotencyKey, ""),
+	}
 
-    //prepare API request
-    _request := unirest.PatchWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.PatchWithAuth(_queryBuilder, headers, request, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetCustomerResponse = &models_pkg.GetCustomerResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetCustomerResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -1515,83 +1515,83 @@ func (me *CUSTOMERS_IMPL) UpdateCustomerMetadata (
  * @param    *string        idempotencyKey      parameter: Optional
  * @return	Returns the *models_pkg.GetCardResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) DeleteCard (
-            customerId string,
-            cardId string,
-            idempotencyKey *string) (*models_pkg.GetCardResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/cards/{card_id}"
+func (me *CUSTOMERS_IMPL) DeleteCard(
+	customerId string,
+	cardId string,
+	idempotencyKey *string) (*models_pkg.GetCardResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/cards/{card_id}"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-        "card_id" : cardId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+		"card_id":     cardId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-        "idempotency-key" : apihelper_pkg.ToString(idempotencyKey, ""),
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":      "PagarmeCoreApi - Go 5.0.1",
+		"accept":          "application/json",
+		"idempotency-key": apihelper_pkg.ToString(idempotencyKey, ""),
+	}
 
-    //prepare API request
-    _request := unirest.DeleteWithAuth(_queryBuilder, headers, nil, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.DeleteWithAuth(_queryBuilder, headers, nil, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetCardResponse = &models_pkg.GetCardResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetCardResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -1602,91 +1602,91 @@ func (me *CUSTOMERS_IMPL) DeleteCard (
  * @param    *int64        size            parameter: Optional
  * @return	Returns the *models_pkg.ListAddressesResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) GetAddresses (
-            customerId string,
-            page *int64,
-            size *int64) (*models_pkg.ListAddressesResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/addresses"
+func (me *CUSTOMERS_IMPL) GetAddresses(
+	customerId string,
+	page *int64,
+	size *int64) (*models_pkg.ListAddressesResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/addresses"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //process optional query parameters
-    _queryBuilder, err = apihelper_pkg.AppendUrlWithQueryParameters(_queryBuilder, map[string]interface{} {
-        "page" : page,
-        "size" : size,
-    })
-    if err != nil {
-        //error in query param handling
-        return nil, err
-    }
+	//process optional query parameters
+	_queryBuilder, err = apihelper_pkg.AppendUrlWithQueryParameters(_queryBuilder, map[string]interface{}{
+		"page": page,
+		"size": size,
+	})
+	if err != nil {
+		//error in query param handling
+		return nil, err
+	}
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent": "PagarmeCoreApi - Go 5.0.1",
+		"accept":     "application/json",
+	}
 
-    //prepare API request
-    _request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.ListAddressesResponse = &models_pkg.ListAddressesResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.ListAddressesResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -1695,79 +1695,79 @@ func (me *CUSTOMERS_IMPL) GetAddresses (
  * @param    string        customerId      parameter: Required
  * @return	Returns the *models_pkg.GetCustomerResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) GetCustomer (
-            customerId string) (*models_pkg.GetCustomerResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}"
+func (me *CUSTOMERS_IMPL) GetCustomer(
+	customerId string) (*models_pkg.GetCustomerResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent": "PagarmeCoreApi - Go 5.0.1",
+		"accept":     "application/json",
+	}
 
-    //prepare API request
-    _request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetCustomerResponse = &models_pkg.GetCustomerResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetCustomerResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -1777,81 +1777,80 @@ func (me *CUSTOMERS_IMPL) GetCustomer (
  * @param    string        cardId          parameter: Required
  * @return	Returns the *models_pkg.GetCardResponse response from the API call
  */
-func (me *CUSTOMERS_IMPL) GetCard (
-            customerId string,
-            cardId string) (*models_pkg.GetCardResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/customers/{customer_id}/cards/{card_id}"
+func (me *CUSTOMERS_IMPL) GetCard(
+	customerId string,
+	cardId string) (*models_pkg.GetCardResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/customers/{customer_id}/cards/{card_id}"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "customer_id" : customerId,
-        "card_id" : cardId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"customer_id": customerId,
+		"card_id":     cardId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent": "PagarmeCoreApi - Go 5.0.1",
+		"accept":     "application/json",
+	}
 
-    //prepare API request
-    _request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetCardResponse = &models_pkg.GetCardResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetCardResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
-

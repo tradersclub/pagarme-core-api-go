@@ -6,19 +6,19 @@
 
 package transactions_pkg
 
-
-import(
+import (
 	"encoding/json"
 	"github.com/apimatic/unirest-go"
-	"pagarmecoreapi_lib/apihelper_pkg"
-	"pagarmecoreapi_lib/configuration_pkg"
-	"pagarmecoreapi_lib/models_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/apihelper_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/configuration_pkg"
+	"github.com/tradersclub/pagarme-core-api-go/src/pagarmecoreapi_lib/models_pkg"
 )
+
 /*
  * Client structure as interface implementation
  */
 type TRANSACTIONS_IMPL struct {
-     config configuration_pkg.CONFIGURATION
+	config configuration_pkg.CONFIGURATION
 }
 
 /**
@@ -26,79 +26,78 @@ type TRANSACTIONS_IMPL struct {
  * @param    string        transactionId      parameter: Required
  * @return	Returns the *models_pkg.GetTransactionResponse response from the API call
  */
-func (me *TRANSACTIONS_IMPL) GetTransaction (
-            transactionId string) (*models_pkg.GetTransactionResponse, error) {
-    //the endpoint path uri
-    _pathUrl := "/transactions/{transaction_id}"
+func (me *TRANSACTIONS_IMPL) GetTransaction(
+	transactionId string) (*models_pkg.GetTransactionResponse, error) {
+	//the endpoint path uri
+	_pathUrl := "/transactions/{transaction_id}"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional template parameters
-    _pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{} {
-        "transaction_id" : transactionId,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional template parameters
+	_pathUrl, err = apihelper_pkg.AppendUrlWithTemplateParameters(_pathUrl, map[string]interface{}{
+		"transaction_id": transactionId,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //the base uri for api requests
-    _queryBuilder := configuration_pkg.BASEURI;
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.BASEURI
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + _pathUrl
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + _pathUrl
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "PagarmeCoreApi - Go 5.0.1",
-        "accept" : "application/json",
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent": "PagarmeCoreApi - Go 5.0.1",
+		"accept":     "application/json",
+	}
 
-    //prepare API request
-    _request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request,false);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.GetWithAuth(_queryBuilder, headers, me.config.BasicAuthUserName(), me.config.BasicAuthPassword())
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request, false)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code == 400) {
-        err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
-    } else if (_response.Code == 401) {
-        err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
-    } else if (_response.Code == 404) {
-        err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
-    } else if (_response.Code == 412) {
-        err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 422) {
-        err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
-    } else if (_response.Code == 500) {
-        err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
-    } else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-            err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if _response.Code == 400 {
+		err = apihelper_pkg.NewAPIError("Invalid request", _response.Code, _response.RawBody)
+	} else if _response.Code == 401 {
+		err = apihelper_pkg.NewAPIError("Invalid API key", _response.Code, _response.RawBody)
+	} else if _response.Code == 404 {
+		err = apihelper_pkg.NewAPIError("An informed resource was not found", _response.Code, _response.RawBody)
+	} else if _response.Code == 412 {
+		err = apihelper_pkg.NewAPIError("Business validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 422 {
+		err = apihelper_pkg.NewAPIError("Contract validation error", _response.Code, _response.RawBody)
+	} else if _response.Code == 500 {
+		err = apihelper_pkg.NewAPIError("Internal server error", _response.Code, _response.RawBody)
+	} else if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetTransactionResponse = &models_pkg.GetTransactionResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal = &models_pkg.GetTransactionResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
-
