@@ -763,7 +763,7 @@ type CreateOrderRequest struct {
 	Items            []*CreateOrderItemRequest `json:"items" form:"items"`                                             //Items
 	Customer         *CreateCustomerRequest    `json:"customer,omitempty" form:"customer,omitempty"`                   //Customer
 	Payments         []*CreatePaymentRequest   `json:"payments" form:"payments"`                                       //Payment data
-	Code             string                    `json:"code,omitempty" form:"code,omitempty"`                           //The order code
+	Code             string                    `json:"code" form:"code"`                                               //The order code
 	CustomerId       string                    `json:"customer_id" form:"customer_id"`                                 //The customer id
 	Shipping         *CreateShippingRequest    `json:"shipping,omitempty" form:"shipping,omitempty"`                   //Shipping data
 	Metadata         map[string]string         `json:"metadata" form:"metadata"`                                       //Metadata
