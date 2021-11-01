@@ -1618,7 +1618,7 @@ type CreateCardRequest struct {
 	ExpMonth         int64                    `json:"exp_month" form:"exp_month"`                                 //The expiration month
 	ExpYear          int64                    `json:"exp_year" form:"exp_year"`                                   //The expiration year, that can be informed with 2 or 4 digits
 	Cvv              string                   `json:"cvv" form:"cvv"`                                             //The card's security code
-	BillingAddress   CreateAddressRequest     `json:"billing_address" form:"billing_address"`                     //Card's billing address
+	BillingAddress   *CreateAddressRequest    `json:"billing_address,omitempty" form:"billing_address,omitempty"` //Card's billing address
 	Brand            string                   `json:"brand" form:"brand"`                                         //Card brand
 	BillingAddressId string                   `json:"billing_address_id" form:"billing_address_id"`               //The address id for the billing address
 	Metadata         map[string]string        `json:"metadata" form:"metadata"`                                   //Metadata
